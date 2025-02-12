@@ -1,18 +1,7 @@
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { RequestData } from "@/types";
 import { ResponseContext } from "@/ResponseContext";
-
-const methodOptions = [
-  "GET",
-  "HEAD",
-  "OPTIONS",
-  "POST",
-  "PUT",
-  "PATCH",
-  "DELETE",
-  "TRACE",
-  "CONNECT",
-];
+import { errorScenarios, methodOptions } from "@/constants";
 
 const RequestForm = () => {
   const respContext = useContext(ResponseContext);
@@ -22,23 +11,49 @@ const RequestForm = () => {
     headers: "",
     body: "",
   });
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      url: `${window.location.origin}/api/test`,
+    }));
+  }, []);
+
+  const handleMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMethod = e.target.value;
+    setFormData((data) => ({
+      ...data,
+      method: newMethod,
+      headers: JSON.stringify(
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer mock-token",
+        },
+        null,
+        2
+      ),
+    }));
+  };
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((data) => ({ ...data, [name]: value }));
   };
 
+  const handleErrorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const errorCode = e.target.value;
+    setFormData((data) => ({
+      ...data,
+      url: `${window.location.origin}/api/test${errorCode ? `?error=${errorCode}` : ""}`,
+    }));
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
 
     try {
       const headersObj = formData.headers ? JSON.parse(formData.headers) : {};
@@ -50,17 +65,11 @@ const RequestForm = () => {
       });
 
       const data = await response.json();
-      console.log("dare", data);
       respContext?.setResp(data);
     } catch (err) {
       if (err instanceof Response) {
         const errorData = await err.json();
         respContext?.setResp(errorData);
-      } else {
-        const errorMessage =
-          err instanceof Error ? err.message : "An error occurred";
-        setError(errorMessage);
-        respContext?.setResp(errorMessage);
       }
     } finally {
       setIsLoading(false);
@@ -78,12 +87,9 @@ const RequestForm = () => {
           <label className="block text-sm font-medium text-gray-400">URL</label>
           <input
             type="text"
-            name="url"
             value={formData.url}
-            onChange={handleInputChange}
-            placeholder="https://api.example.com/users"
             className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
-            required
+            disabled
           />
         </div>
 
@@ -94,12 +100,30 @@ const RequestForm = () => {
           <select
             name="method"
             value={formData.method}
-            onChange={handleInputChange}
+            onChange={handleMethodChange}
             className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
           >
             {methodOptions.map((option: string, index: number) => (
               <option key={index} value={option}>
                 {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-400">
+            Simulate Error
+          </label>
+          <select
+            name="error"
+            className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
+            onChange={handleErrorChange}
+          >
+            <option value="">Success</option>
+            {errorScenarios.map((error) => (
+              <option key={error.code} value={error.code}>
+                {error.code} - {error.name}
               </option>
             ))}
           </select>
@@ -132,8 +156,6 @@ const RequestForm = () => {
             rows={5}
           />
         </div>
-
-        {error && <div className="text-red-600 text-sm">{error}</div>}
 
         <button
           type="submit"

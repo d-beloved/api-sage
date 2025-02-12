@@ -8,10 +8,11 @@ export interface RequestData {
 export interface ResponseData {
   status: string;
   headers: any;
-  body: any;
+  message?: any;
+  error?: any;
 }
 
 export interface ResponseContextType {
-  resp: ResponseData | string;
-  setResp: (value: ResponseData | string) => void;
+  resp: ResponseData;
+  setResp: (value: ResponseData) => void;
 }

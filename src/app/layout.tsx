@@ -1,9 +1,6 @@
-import { useState } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ResponseContext } from "@/ResponseContext";
-import { ResponseData } from "@/types";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,16 +22,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [resp, setResp] = useState<ResponseData | string>("");
-
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ResponseContext.Provider value={{ resp, setResp }}>
-          {children}
-        </ResponseContext.Provider>
+        {children}
       </body>
     </html>
   );
