@@ -6,10 +6,9 @@ export interface RequestData {
 }
 
 export interface ResponseData {
-  status: string;
+  status: number;
   headers: any;
-  message?: any;
-  error?: any;
+  body?: any;
 }
 
 export interface ResponseContextType {

@@ -6,12 +6,10 @@ import APIResponse from "@/components/Response";
 import AIXplain from "@/components/AIXplain";
 import { ResponseContext } from "@/ResponseContext";
 import { ResponseData } from "@/types";
+import { defaultResponseData } from "@/constants";
 
 export default function Home() {
-  const [resp, setResp] = useState<ResponseData>({
-    status: "",
-    headers: {},
-  });
+  const [resp, setResp] = useState<ResponseData>({ ...defaultResponseData });
 
   return (
     <ResponseContext.Provider value={{ resp, setResp }}>

@@ -1,17 +1,23 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { RequestData } from "@/types";
 import { ResponseContext } from "@/ResponseContext";
-import { errorScenarios, methodOptions } from "@/constants";
+import {
+  defaultResponseData,
+  errorScenarios,
+  methodOptions,
+  methodTemplates,
+} from "@/constants";
 
 const RequestForm = () => {
   const respContext = useContext(ResponseContext);
   const [formData, setFormData] = useState<RequestData>({
     url: "",
-    method: "GET",
+    method: "",
     headers: "",
     body: "",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedError, setSelectedError] = useState<string>("");
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -22,33 +28,37 @@ const RequestForm = () => {
 
   const handleMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newMethod = e.target.value;
+    setSelectedError("");
     setFormData((data) => ({
       ...data,
+      url: `${window.location.origin}/api/test`,
       method: newMethod,
       headers: JSON.stringify(
-        {
-          "Content-Type": "application/json",
-          Authorization: "Bearer mock-token",
-        },
+        methodTemplates.headers[
+          newMethod as keyof typeof methodTemplates.headers
+        ] || {},
+        null,
+        2
+      ),
+      body: JSON.stringify(
+        methodTemplates.bodies[
+          newMethod as keyof typeof methodTemplates.bodies
+        ] || {},
         null,
         2
       ),
     }));
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((data) => ({ ...data, [name]: value }));
+    respContext?.setResp({ ...defaultResponseData });
   };
 
   const handleErrorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const errorCode = e.target.value;
+    setSelectedError(errorCode);
     setFormData((data) => ({
       ...data,
       url: `${window.location.origin}/api/test${errorCode ? `?error=${errorCode}` : ""}`,
     }));
+    respContext?.setResp({ ...defaultResponseData });
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -103,43 +113,47 @@ const RequestForm = () => {
             onChange={handleMethodChange}
             className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
           >
+            <option value="" disabled>
+              Select an HTTP method
+            </option>
             {methodOptions.map((option: string, index: number) => (
-              <option key={index} value={option}>
+              <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-400">
-            Simulate Error
-          </label>
-          <select
-            name="error"
-            className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
-            onChange={handleErrorChange}
-          >
-            <option value="">Success</option>
-            {errorScenarios.map((error) => (
-              <option key={error.code} value={error.code}>
-                {error.code} - {error.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {formData.method !== "" && (
+          <div>
+            <label className="block text-sm font-medium text-gray-400">
+              Simulate Different Scenarios
+            </label>
+            <select
+              name="error"
+              value={selectedError}
+              className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
+              onChange={handleErrorChange}
+            >
+              <option value="">Success</option>
+              {errorScenarios.map((error) => (
+                <option key={error.code} value={error.code}>
+                  {error.code} - {error.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div>
           <label className="block text-sm font-medium text-gray-400">
             Headers
           </label>
           <textarea
-            name="headers"
             value={formData.headers}
-            onChange={handleInputChange}
-            placeholder='{ "Content-Type": "application/json" }'
             className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
-            rows={3}
+            rows={8}
+            readOnly
           />
         </div>
 
@@ -148,12 +162,10 @@ const RequestForm = () => {
             Body
           </label>
           <textarea
-            name="body"
             value={formData.body}
-            onChange={handleInputChange}
-            placeholder='{ "name": "John", "email": "john@example.com" }'
             className="mt-1 block w-full p-2 border text-black border-gray-300 rounded-md"
             rows={5}
+            readOnly
           />
         </div>
 

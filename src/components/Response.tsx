@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 const APIResponse = () => {
   const responseContext = useContext(ResponseContext);
-  console.log("response", responseContext?.resp);
+  const resp = responseContext?.resp;
 
   return (
     <div className="p-6 bg-gray-500 rounded-lg shadow-md">
@@ -13,8 +13,8 @@ const APIResponse = () => {
           <label className="block text-sm font-medium text-gray-700">
             Status Code
           </label>
-          <div className="mt-1 p-2 text-black bg-white border border-gray-300 rounded-md">
-            200 OK
+          <div className="mt-1 p-2 text-black bg-white border border-gray-300 rounded-md overflow-x-auto">
+            {resp?.status}
           </div>
         </div>
 
@@ -23,7 +23,22 @@ const APIResponse = () => {
             Headers
           </label>
           <pre className="mt-1 p-2 text-black bg-white border border-gray-300 rounded-md overflow-x-auto">
-            {JSON.stringify({ "content-type": "application/json" }, null, 2)}
+            {JSON.stringify(resp?.headers, null, 2)}
+          </pre>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Cookies
+          </label>
+          <pre className="mt-1 p-2 text-black bg-white border border-gray-300 rounded-md overflow-x-auto">
+            {resp?.headers["set-cookie"]
+              ? resp.headers["set-cookie"].map((cookie: any) => (
+                  <div key={cookie} className="mb-2">
+                    {cookie}
+                  </div>
+                ))
+              : "No cookies set"}
           </pre>
         </div>
 
@@ -32,7 +47,7 @@ const APIResponse = () => {
             Body
           </label>
           <pre className="mt-1 p-2 text-black bg-white border border-gray-300 rounded-md overflow-x-auto">
-            {JSON.stringify({ message: "Request successful" }, null, 2)}
+            {JSON.stringify(resp?.body, null, 2)}
           </pre>
         </div>
 
