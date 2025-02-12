@@ -1,4 +1,10 @@
+import { ResponseContext } from "@/ResponseContext";
+import { useContext } from "react";
+
 const APIResponse = () => {
+  const responseContext = useContext(ResponseContext);
+  console.log("response", responseContext?.resp);
+
   return (
     <div className="p-6 bg-gray-500 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-4">Response</h2>
