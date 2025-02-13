@@ -1,32 +1,81 @@
-const AIXplain = () => {
-  return (
-    <div className="mt-6 p-6 bg-gray-500 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">AI Explanations</h2>
-      <div className="space-y-4">
-        <div>
-          <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
-            Explain Method
-          </button>
-          <div className="mt-2 p-3 text-black bg-white border border-gray-300 rounded-md">
-            <p>
-              The GET method is used to retrieve data from a server. It should
-              not have any side effects on the server.
-            </p>
-          </div>
-        </div>
+import { useContext, useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { ResponseContext } from "@/ResponseContext";
+import { AIExplainProps } from "@/types";
+import { REQUEST } from "@/constants";
 
-        <div>
-          <button className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">
-            Explain Response
-          </button>
-          <div className="mt-2 p-3 text-black bg-white border border-gray-300 rounded-md">
-            <p>
-              A 200 status code indicates that the request was successful. The
-              response body contains the requested data.
-            </p>
-          </div>
+const AIXplain: React.FC<AIExplainProps> = ({
+  text,
+  type,
+  disabled,
+  url,
+  method,
+  headers,
+  body,
+}) => {
+  const responseContext = useContext(ResponseContext);
+  const response = responseContext?.resp;
+  const [explanation, setExplanation] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (type === REQUEST) {
+      setExplanation("");
+    }
+  }, [method]);
+
+  const getExplanation = async () => {
+    setIsLoading(true);
+    try {
+      const reqBody =
+        type === REQUEST
+          ? {
+              request: {
+                url,
+                method,
+                headers: JSON.parse(headers || "{}"),
+                body: body ? JSON.parse(body) : undefined,
+              },
+            }
+          : {
+              response: {
+                status: response?.status,
+                headers: response?.headers,
+                body: response?.body,
+              },
+            };
+
+      const res = await fetch("/api/explain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reqBody),
+      });
+
+      const data = await res.json();
+      if (data.explanation) {
+        setExplanation(data.explanation);
+      }
+    } catch (error) {
+      console.error("Explanation error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="bg-gray-800 rounded-lg p-6 mt-6">
+      <button
+        onClick={getExplanation}
+        disabled={isLoading || disabled}
+        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+      >
+        {isLoading ? "Analyzing..." : text}
+      </button>
+      {explanation && (
+        <div className="prose prose-invert max-w-none">
+          <ReactMarkdown>{explanation}</ReactMarkdown>
         </div>
-      </div>
+      )}
     </div>
   );
 };

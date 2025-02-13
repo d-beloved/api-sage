@@ -3,7 +3,6 @@
 import { useState } from "react";
 import RequestForm from "@/components/RequestForm";
 import APIResponse from "@/components/Response";
-import AIXplain from "@/components/AIXplain";
 import { ResponseContext } from "@/ResponseContext";
 import { ResponseData } from "@/types";
 import { defaultResponseData } from "@/constants";
@@ -27,10 +26,6 @@ export default function Home() {
             <div className="col-span-2">
               <APIResponse />
             </div>
-          </div>
-
-          <div className="mt-6">
-            <AIXplain />
           </div>
         </main>
       </div>

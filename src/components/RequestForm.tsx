@@ -6,7 +6,9 @@ import {
   errorScenarios,
   methodOptions,
   methodTemplates,
+  REQUEST,
 } from "@/constants";
+import AIXplain from "./AIXplain";
 
 const RequestForm = () => {
   const respContext = useContext(ResponseContext);
@@ -22,7 +24,7 @@ const RequestForm = () => {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      url: `${window.location.origin}/api/test`,
+      url: `${window.location.origin}/api/testhttpmethod`,
     }));
   }, []);
 
@@ -31,7 +33,7 @@ const RequestForm = () => {
     setSelectedError("");
     setFormData((data) => ({
       ...data,
-      url: `${window.location.origin}/api/test`,
+      url: `${window.location.origin}/api/testhttpmethod`,
       method: newMethod,
       headers: JSON.stringify(
         methodTemplates.headers[
@@ -56,7 +58,7 @@ const RequestForm = () => {
     setSelectedError(errorCode);
     setFormData((data) => ({
       ...data,
-      url: `${window.location.origin}/api/test${errorCode ? `?error=${errorCode}` : ""}`,
+      url: `${window.location.origin}/api/testhttpmethod${errorCode ? `?error=${errorCode}` : ""}`,
     }));
     respContext?.setResp({ ...defaultResponseData });
   };
@@ -71,7 +73,9 @@ const RequestForm = () => {
       const response = await fetch(formData.url, {
         method: formData.method,
         headers: headersObj,
-        body: formData.method !== "GET" ? formData.body : null,
+        body: ["GET", "DELETE"].includes(formData.method)
+          ? null
+          : formData.body,
       });
 
       const data = await response.json();
@@ -86,12 +90,25 @@ const RequestForm = () => {
     }
   };
 
+  const shouldDisableSubmit = formData.method === "" || isLoading;
+
   return (
     <form
       onSubmit={handleSubmit}
       className="p-6 bg-gray-500 rounded-lg shadow-md"
     >
-      <h2 className="text-xl font-semibold mb-4">Make a Request</h2>
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold mb-4">Make a Request</h2>
+        <AIXplain
+          text="Explain this request"
+          type={REQUEST}
+          disabled={formData.method === ""}
+          url={formData.url}
+          method={formData.method}
+          headers={formData.headers}
+          body={formData.body}
+        />
+      </div>
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-400">URL</label>
@@ -171,8 +188,8 @@ const RequestForm = () => {
 
         <button
           type="submit"
-          disabled={isLoading}
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+          disabled={shouldDisableSubmit}
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
         >
           {isLoading ? "Sending..." : "Send Request"}
         </button>
