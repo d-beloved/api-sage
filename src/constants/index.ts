@@ -118,7 +118,7 @@ export const methodTemplates = {
 };
 
 export const defaultResponseData = {
-  status: 200,
+  status: 0,
   headers: {},
   body: {},
 };

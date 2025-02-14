@@ -41,3 +41,12 @@ export interface AIExplainProps {
   headers?: string;
   body?: string;
 }
+
+export interface Tab {
+  name: string;
+  content: string;
+}
+
+export interface JSONTabProps {
+  Tabs: Tab[];
+}
