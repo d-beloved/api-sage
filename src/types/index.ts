@@ -33,7 +33,6 @@ export interface AIExplanation {
 }
 
 export interface AIExplainProps {
-  text: string;
   type: typeof REQUEST | typeof RESPONSE;
   disabled: boolean;
   url?: string;
@@ -49,4 +48,11 @@ export interface Tab {
 
 export interface JSONTabProps {
   Tabs: Tab[];
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
 }

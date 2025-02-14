@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ResponseContext } from "@/ResponseContext";
 import { AIExplainProps } from "@/types";
 import { REQUEST } from "@/constants";
+import Modal from "./Modal";
 
 const AIXplain: React.FC<AIExplainProps> = ({
-  text,
   type,
   disabled,
   url,
@@ -15,17 +15,13 @@ const AIXplain: React.FC<AIExplainProps> = ({
 }) => {
   const responseContext = useContext(ResponseContext);
   const response = responseContext?.resp;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [explanation, setExplanation] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (type === REQUEST) {
-      setExplanation("");
-    }
-  }, [method]);
-
   const getExplanation = async () => {
     setIsLoading(true);
+    setIsModalOpen(true);
     try {
       const reqBody =
         type === REQUEST
@@ -63,20 +59,39 @@ const AIXplain: React.FC<AIExplainProps> = ({
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6 mt-6">
+    <>
       <button
         onClick={getExplanation}
         disabled={isLoading || disabled}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+        className="inline-flex font-extrabold invert items-center space-x-2 text-blue-600 hover:text-blue-400 disabled:text-gray-500"
       >
-        {isLoading ? "Analyzing..." : text}
+        <img src="/color-wand.svg" alt="AI-Wand" className="w-5 h-5" />
+        <span>Get AI Explanation for your {type}</span>
       </button>
-      {explanation && (
-        <div className="prose prose-invert max-w-none">
-          <ReactMarkdown>{explanation}</ReactMarkdown>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setExplanation("");
+        }}
+        title={`API ${type} Explanation`}
+      >
+        <div className="space-y-4">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+            </div>
+          ) : (
+            <div className="prose prose-invert max-w-none">
+              <pre className="whitespace-pre-wrap text-sm bg-gray-900 p-4 rounded-lg">
+                <ReactMarkdown>{explanation}</ReactMarkdown>
+              </pre>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </Modal>
+    </>
   );
 };
 

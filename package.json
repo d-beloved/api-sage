@@ -10,6 +10,7 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@huggingface/inference": "^3.3.3",
     "next": "15.1.6",
     "react": "^19.0.0",
