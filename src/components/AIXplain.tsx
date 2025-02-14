@@ -1,11 +1,12 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { ResponseContext } from "@/ResponseContext";
 import { AIExplainProps } from "@/types";
 import { REQUEST } from "@/constants";
 import Modal from "./Modal";
 
-const AIXplain: React.FC<AIExplainProps> = ({
+const AIXplain: FC<AIExplainProps> = ({
   type,
   disabled,
   url,
@@ -67,7 +68,7 @@ const AIXplain: React.FC<AIExplainProps> = ({
           disabled:text-gray-500 text-xs sm:text-sm md:text-base font-semibold transition-colors invert"
         title={`Get AI Explanation for your ${type}`}
       >
-        <img
+        <Image
           src="/color-wand.svg"
           alt="AI-Wand"
           className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform"

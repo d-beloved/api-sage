@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import { RequestData } from "@/types";
 import { ResponseContext } from "@/ResponseContext";
 import {
@@ -29,7 +29,7 @@ const RequestForm = () => {
     }));
   }, []);
 
-  const handleMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleMethodChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newMethod = e.target.value;
     setSelectedError("");
     setFormData((data) => ({
@@ -54,7 +54,7 @@ const RequestForm = () => {
     respContext?.setResp({ ...defaultResponseData });
   };
 
-  const handleErrorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleErrorChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const errorCode = e.target.value;
     setSelectedError(errorCode);
     setFormData((data) => ({

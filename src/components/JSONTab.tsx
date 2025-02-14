@@ -1,7 +1,7 @@
+import { FC, useState } from "react";
 import { JSONTabProps, Tab } from "@/types";
-import { useState } from "react";
 
-const JSONTab: React.FC<JSONTabProps> = ({ Tabs }) => {
+const JSONTab: FC<JSONTabProps> = ({ Tabs }) => {
   const [activeTab, setActiveTab] = useState<Tab>(Tabs[0]);
 
   const TabHeader = Tabs.map((tab) => tab.name);

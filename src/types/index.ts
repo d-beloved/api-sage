@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { REQUEST, RESPONSE } from "@/constants";
 
 export interface RequestData {
@@ -15,6 +16,7 @@ export interface ResponseData {
 
 export interface ResponseContextType {
   resp: ResponseData;
+  // eslint-disable-next-line no-unused-vars
   setResp: (value: ResponseData) => void;
 }
 
@@ -54,5 +56,5 @@ export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }

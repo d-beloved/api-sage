@@ -79,7 +79,6 @@ export async function generateExplanation(
     const generatedText = response.generated_text || "";
 
     const wordCount = generatedText.trim().split(/\s+/).length;
-    console.log(`Generated word count: ${wordCount}`);
 
     if (wordCount > 400) {
       const words = generatedText.trim().split(/\s+/).slice(0, 400);
