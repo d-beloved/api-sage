@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# API Sage
+
+================
+
+API Sage is a Next.js project that provides a user-friendly interface for exploring and mastering HTTP methods with the help of AI-powered insights.
+
+![API Sage UI](/public/api-sage.png "API Sage UI")
 
 ## Getting Started
 
-First, run the development server:
+To get started with API Sage, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository: `git clone https://github.com/your-username/api-sage.git`
+2. Install dependencies: `npm install` or `yarn install` or `pnpm install`
+3. Start the development server: `npm run dev` or `yarn dev` or `pnpm run dev`
+4. Open your browser and navigate to `http://localhost:3000`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Explore HTTP methods (GET, POST, PUT, PATCH, DELETE) with AI-powered explanations
+- Customize request headers and bodies with a user-friendly interface
+- View response data in a readable format
+- Get insights into API responses with AI-generated explanations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Technologies Used
 
-## Learn More
+- Next.js
+- React
+- Tailwind CSS
+- Hugging Face Inference API
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app`: Contains the main application code, including pages and components
+- `src/components`: Contains reusable components, such as the RequestForm and APIResponse components
+- `src/constants`: Contains constants and utility functions used throughout the application
+- `src/services`: Contains services, such as the AI explanation service
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contributing
 
-## Deploy on Vercel
+Contributions are welcome! If you'd like to contribute to API Sage, please fork the repository and submit a pull request.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+API Sage is licensed under the MIT License.
+
+## Acknowledgments
+
+API Sage uses the following open-source libraries and services:
+
+- Next.js
+- React
+- Tailwind CSS
+- Hugging Face Inference API
+
+Thanks to the maintainers and contributors of these projects for their hard work and dedication.
