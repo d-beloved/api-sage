@@ -104,7 +104,7 @@ const RequestForm = () => {
             }
             className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-t-lg text-xs sm:text-sm whitespace-nowrap ${
               formData.method === option
-                ? "bg-blue-600 text-white"
+                ? "bg-violet-600 text-white"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
             }`}
           >
@@ -129,7 +129,7 @@ const RequestForm = () => {
         </div>
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 bg-gray-800 p-2 rounded-lg">
-            <span className="px-2 sm:px-3 py-1 rounded-md bg-blue-600 text-white font-mono text-xs sm:text-sm whitespace-nowrap">
+            <span className="px-2 sm:px-3 py-1 rounded-md bg-violet-600 text-white font-mono text-xs sm:text-sm whitespace-nowrap">
               {formData.method || "HTTP METHOD"}
             </span>
             <input
@@ -173,7 +173,7 @@ const RequestForm = () => {
           <button
             type="submit"
             disabled={shouldDisableSubmit}
-            className="w-full bg-blue-600 text-white py-2 sm:py-3 rounded-lg hover:bg-blue-700
+            className="w-full bg-violet-600 text-white py-2 sm:py-3 rounded-lg hover:bg-violet-700
              disabled:bg-gray-600 disabled:cursor-not-allowed
              flex items-center justify-center space-x-2 text-sm sm:text-base"
           >

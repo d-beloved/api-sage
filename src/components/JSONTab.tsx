@@ -18,7 +18,7 @@ const JSONTab: React.FC<JSONTabProps> = ({ Tabs }) => {
               onClick={() => setActiveTab(Tabs.find((t) => t.name === tab)!)}
               className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm whitespace-nowrap transition-colors ${
                 activeTab.name.toLowerCase() === tab.toLowerCase()
-                  ? "border-b-2 border-blue-500 text-white font-medium"
+                  ? "border-b-2 border-violet-500 text-white font-medium"
                   : "text-gray-400 hover:text-white hover:bg-gray-700/50"
               }`}
             >
