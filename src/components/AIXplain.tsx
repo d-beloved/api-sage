@@ -63,10 +63,19 @@ const AIXplain: React.FC<AIExplainProps> = ({
       <button
         onClick={getExplanation}
         disabled={isLoading || disabled}
-        className="inline-flex font-extrabold invert items-center space-x-2 text-blue-600 hover:text-blue-400 disabled:text-gray-500"
+        className="group inline-flex items-center space-x-1 sm:space-x-2 text-blue-600 hover:text-blue-400 
+          disabled:text-gray-500 text-xs sm:text-sm md:text-base font-semibold transition-colors invert"
+        title={`Get AI Explanation for your ${type}`}
       >
-        <img src="/color-wand.svg" alt="AI-Wand" className="w-5 h-5" />
-        <span>Get AI Explanation for your {type}</span>
+        <img
+          src="/color-wand.svg"
+          alt="AI-Wand"
+          className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform"
+        />
+        <span className="hidden sm:inline">
+          Get AI Explanation for your {type}
+        </span>
+        <span className="sm:hidden">AI Explain</span>
       </button>
 
       <Modal
@@ -77,16 +86,35 @@ const AIXplain: React.FC<AIExplainProps> = ({
         }}
         title={`API ${type} Explanation`}
       >
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {isLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+            <div className="flex items-center justify-center py-6 sm:py-8">
+              <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-blue-500" />
             </div>
           ) : (
-            <div className="prose prose-invert max-w-none">
-              <pre className="whitespace-pre-wrap text-sm bg-gray-900 p-4 rounded-lg">
-                <ReactMarkdown>{explanation}</ReactMarkdown>
-              </pre>
+            <div className="prose prose-invert prose-sm sm:prose max-w-none">
+              <div className="max-h-[50vh] sm:max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                <pre className="whitespace-pre-wrap text-xs sm:text-sm bg-gray-900 p-3 sm:p-4 rounded-lg">
+                  <ReactMarkdown
+                    components={{
+                      // Customize markdown components for better mobile display
+                      p: ({ children }) => (
+                        <p className="my-2 sm:my-3">{children}</p>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="my-2 sm:my-3 pl-4 sm:pl-6">
+                          {children}
+                        </ul>
+                      ),
+                      li: ({ children }) => (
+                        <li className="my-1 sm:my-2">{children}</li>
+                      ),
+                    }}
+                  >
+                    {explanation}
+                  </ReactMarkdown>
+                </pre>
+              </div>
             </div>
           )}
         </div>

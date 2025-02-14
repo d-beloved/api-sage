@@ -9,17 +9,17 @@ const JSONTab: React.FC<JSONTabProps> = ({ Tabs }) => {
 
   return (
     <>
-      <div className="border-b border-gray-600">
-        <nav className="flex">
+      <div className="border-b border-gray-600 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+        <nav className="flex min-w-max">
           {TabHeader.map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(Tabs.find((t) => t.name === tab)!)}
-              className={`px-6 py-3 ${
+              className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm whitespace-nowrap transition-colors ${
                 activeTab.name.toLowerCase() === tab.toLowerCase()
-                  ? "border-b-2 border-blue-500 text-white"
-                  : "text-gray-400 hover:text-white"
+                  ? "border-b-2 border-blue-500 text-white font-medium"
+                  : "text-gray-400 hover:text-white hover:bg-gray-700/50"
               }`}
             >
               {tab}
@@ -28,9 +28,9 @@ const JSONTab: React.FC<JSONTabProps> = ({ Tabs }) => {
         </nav>
       </div>
 
-      <div className="p-6">
+      <div className="p-3 sm:p-4 md:p-6">
         {TabContent && (
-          <pre className="bg-gray-800 p-4 rounded-lg text-white font-mono text-sm overflow-auto">
+          <pre className="bg-gray-800 p-2 sm:p-4 rounded-lg text-white font-mono text-xs sm:text-sm overflow-x-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
             {TabContent}
           </pre>
         )}
