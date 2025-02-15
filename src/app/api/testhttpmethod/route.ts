@@ -117,10 +117,11 @@ export async function PATCH(request: NextRequest) {
   if (errorResponse) return errorResponse;
 
   const body = await request.json();
+
   return NextResponse.json({
     status: 200,
     headers: methodTemplates.responseHeaders.PATCH,
-    body: { message: "PATCH request successful", data: body },
+    body: { message: "PATCH request successful", data: { ...body } },
   });
 }
 

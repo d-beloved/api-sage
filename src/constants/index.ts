@@ -29,14 +29,13 @@ export const methodTemplates = {
       Accept: "application/json",
     },
     PATCH: {
-      "Content-Type": "application/json-patch+json",
+      "Content-Type": "application/json",
       Authorization: "Bearer <token>",
       "If-Match": "etag-value",
       Accept: "application/json",
     },
     DELETE: {
       Authorization: "Bearer <token>",
-      "If-Match": "etag-value",
     },
   },
 

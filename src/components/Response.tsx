@@ -16,11 +16,11 @@ const APIResponse = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0 mb-4">
         <div
           className={`px-3 sm:px-6 py-2 sm:py-4 rounded-lg sm:rounded-full ${
-            resp?.status.toString().startsWith("2")
+            resp?.status?.toString().startsWith("2")
               ? "bg-green-600"
-              : resp?.status.toString().startsWith("4")
+              : resp?.status?.toString().startsWith("4")
                 ? "bg-yellow-600"
-                : resp?.status.toString().startsWith("5")
+                : resp?.status?.toString().startsWith("5")
                   ? "bg-red-600"
                   : "bg-gray-600"
           }`}

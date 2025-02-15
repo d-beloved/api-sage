@@ -71,6 +71,8 @@ const AIXplain: FC<AIExplainProps> = ({
         <Image
           src="/color-wand.svg"
           alt="AI-Wand"
+          width={0}
+          height={0}
           className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform"
         />
         <span className="hidden sm:inline">
