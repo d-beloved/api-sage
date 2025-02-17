@@ -31,7 +31,6 @@ export const methodTemplates = {
     PATCH: {
       "Content-Type": "application/json",
       Authorization: "Bearer <token>",
-      "If-Match": "etag-value",
       Accept: "application/json",
     },
     DELETE: {
