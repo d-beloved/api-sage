@@ -112,6 +112,9 @@ const AIXplain: FC<AIExplainProps> = ({
                       li: ({ children }) => (
                         <li className="my-1 sm:my-2">{children}</li>
                       ),
+                      pre: ({ children }) => (
+                        <pre className="whitespace-pre-wrap">{children}</pre>
+                      ),
                     }}
                   >
                     {explanation}
